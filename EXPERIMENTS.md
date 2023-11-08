@@ -30,7 +30,7 @@ For SAM/ASAM experiments, add ```--opt_method=SAM/ASAM``` to the command with Fe
 - **rule_arg**: The argument for the partition rule, typically the concentration parameter for the Dirichlet distribution for non-iid setups
 - **alg_name**: FedAvg/FedDyn/FedDC/FedSpeed
 - **mu_mean**: hyperparameter $\zeta$ (we have used 0.15 for CIFAR100 and 0.1 for  Tiny-Imagenet)
-- **mu_var**:
+- **mu_var**: 0 (not used in our experiments)
 - **epoch**: number of epochs per round
 - **lr_decay_per_round**: learning rate decay per round
 - **learning_rate**: initial learning rate
@@ -54,4 +54,4 @@ gdown 13xbXPCi1LAXuZRNIy6ArkJp79qpwQiIi
 - **Number of Clients**: 100 clients participated in the experiments.
 - **Client Selection**: 10% of clients were selected at random for each communication round.
 - **Communication Rounds**: Accuracy was measured at the end of 500 communication rounds.
-- **Sensitivity Analysis**: Conducted for hyper-parameter \($\zeta\$) on global model accuracy.
+- **Sensitivity Analysis**: Conducted for hyper-parameter ($\zeta$) on global model accuracy.

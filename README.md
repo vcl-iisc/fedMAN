@@ -66,6 +66,9 @@ The codebase is primarily dependent on the following libraries:
 ### Getting Started
 Please follow the instructions in [EXPERIMENTS.md](EXPERIMENTS.md) to get started with experiments.
 
+## :+1: Acknowledgement
+This project is built upon the codebase of [FedDyn](https://github.com/alpemreacar/FedDyn). Thanks to all the contributors of this work.
+
 ## :pencil: Citation
 
 If you think this project is helpful, please feel free to cite our paper:
