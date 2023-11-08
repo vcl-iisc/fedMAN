@@ -2,7 +2,6 @@ from utils_libs import *
 from utils_dataset import *
 from utils_models import *
 from utils_general import *
-from pyhessian.hessian import hessian
 
 ### Methods
 def train_FedAvg(data_obj, act_prob ,learning_rate, batch_size, epoch, com_amount, print_per, weight_decay, model_func, init_model, save_period, lr_decay_per_round, args, rand_seed=0):
@@ -213,31 +212,10 @@ def train_FedAvg(data_obj, act_prob ,learning_rate, batch_size, epoch, com_amoun
                 tmp_all_model = all_model
                 tmp_sel_model = avg_model
 
-            if i == -1:
-                #top_eig_val = []
-                tl = data.DataLoader(Dataset(cent_x, cent_y, dataset_name='CIFAR100'), batch_size=batch_size, shuffle=False)
-                criterion = torch.nn.CrossEntropyLoss()
-                name_list = ['conv1','conv2','fc1','fc2','fc3','all']
-                for active_param_name in name_list:
-                    print("computing eig value for:",active_param_name)
-                    hessian_comp_all = hessian(all_model, criterion, dataloader=tl, device=device,active_params_name=active_param_name)
-                    hessian_comp = hessian(avg_model, criterion, dataloader=tl, device=device,active_params_name=active_param_name)
-                    trace_comp_all, diag_comp_all = hessian_comp_all.trace()
-                    trace_comp, diag_comp = hessian_comp.trace()
-                    top_eig_val.append(hessian_comp.eigenvalues(top_n=1)[0])
-                    trace_val.append(np.mean(trace_comp))
-                    top_eig_val_all.append(hessian_comp_all.eigenvalues(top_n=1)[0])
-                    trace_val_all.append(np.mean(trace_comp_all))
-                    print("all model top eig:",top_eig_val_all[-1],"\t","avg_model top eig:",top_eig_val[-1]) 
-
             if ((i+1) % save_period == 0):
                 fed_mdls_sel[i//save_period] = avg_model
                 fed_mdls_all[i//save_period] = all_model
     
-    #np.save('Output/%s/%s/top_eig_val.npy' %(data_obj.name, method_name),np.array(top_eig_val)) 
-    #np.save('Output/%s/%s/trace_val.npy' %(data_obj.name, method_name),np.array(trace_val))
-    #np.save('Output/%s/%s/top_eig_val_all.npy' %(data_obj.name, method_name),np.array(top_eig_val_all)) 
-    #np.save('Output/%s/%s/trace_val_all.npy' %(data_obj.name, method_name),np.array(trace_val_all))
     return fed_mdls_sel, trn_perf_sel, tst_perf_sel, fed_mdls_all, trn_perf_all, tst_perf_all
 
 
@@ -856,31 +834,8 @@ def train_FedAvgReg(data_obj, act_prob ,learning_rate, batch_size, epoch, com_am
             if ((i+1) % save_period == 0):
                 fed_mdls_sel[i//save_period] = avg_model
                 fed_mdls_all[i//save_period] = all_model
-
-
             
-            if (i+1)%100 == 0:
-                #top_eig_val = []
-                tl = data.DataLoader(Dataset(cent_x, cent_y, dataset_name='CIFAR100'), batch_size=batch_size, shuffle=False)
-                criterion = torch.nn.CrossEntropyLoss()
-                name_list = ['conv1','conv2','fc1','fc2','fc3','all']
-                for active_param_name in name_list:
-                    print("computing eig value for:",active_param_name)
-                    hessian_comp_all = hessian(all_model, criterion, dataloader=tl, device=device,active_params_name=active_param_name)
-                    hessian_comp = hessian(avg_model, criterion, dataloader=tl, device=device,active_params_name=active_param_name)
-                    trace_comp_all, diag_comp_all = hessian_comp_all.trace()
-                    trace_comp, diag_comp = hessian_comp.trace()
-                    top_eig_val.append(hessian_comp.eigenvalues(top_n=1)[0])
-                    trace_val.append(np.mean(trace_comp))
-                    top_eig_val_all.append(hessian_comp_all.eigenvalues(top_n=1)[0])
-                    trace_val_all.append(np.mean(trace_comp_all))
-                    print("all model top eig:",top_eig_val_all[-1],"\t","avg_model top eig:",top_eig_val[-1]) 
     method1_name = 'FedAvgReg' 
-    np.save('Output/%s/%s/top_eig_val.npy' %(data_obj.name, method1_name),np.array(top_eig_val)) 
-    np.save('Output/%s/%s/trace_val.npy' %(data_obj.name, method1_name),np.array(trace_val))
-    np.save('Output/%s/%s/top_eig_val_all.npy' %(data_obj.name, method1_name),np.array(top_eig_val_all)) 
-    np.save('Output/%s/%s/trace_val_all.npy' %(data_obj.name, method1_name),np.array(trace_val_all))
-
     return fed_mdls_sel, trn_perf_sel, tst_perf_sel, fed_mdls_all, trn_perf_all, tst_perf_all
 
 
